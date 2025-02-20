@@ -28,10 +28,16 @@ pip install -r requirements.txt
 
 We suggest intention as the **ideal edge** of the state space graph among **popular nodes**. Below image represents 6 popular states of the diagonal flip task. We add 2 states for `start` action and `end` action.
 
-#### Popular States for the Diagonal Flip Task
+#### Example 1: Popular States for the Diagonal Flip Task
 
 <p align="center">
-    <img src="figure/popular_states_dflip.svg" width="800">
+    <img src="figure/popular_states_dflip.svg" width="700">
+</p>
+
+#### Example 2: Popular States for the Stretch Task
+
+<p align="center">
+    <img src="figure/popular_states_stretch.svg" width="1000">
 </p>
 
 Although the dataset in this repository already contains **annotated intention information**, you can preprocess the data manually.
