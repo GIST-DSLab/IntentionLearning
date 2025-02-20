@@ -20,9 +20,19 @@ if [ -n "$GPU_ID" ]; then
     export CUDA_VISIBLE_DEVICES=$GPU_ID
 fi
 
+case "$TASK_NAME" in
+    dflip)
+        INTENTION_SIZE=8
+        ;;
+    stretch)
+        INTENTION_SIZE=10
+        ;;
+esac
+
 echo "Using task: $TASK_NAME"
 echo "Using model: $MODEL_NAME"
 echo "Using GPU: $GPU_ID"
+echo "Intention size set to: $INTENTION_SIZE"
 
 echo "Add Python PATH $(pwd)"
 export PYTHONPATH=$(pwd)
@@ -44,7 +54,7 @@ python src/train.py \
     --n_head 8  \
     --grid_x 5 \
     --grid_y 5 \
-    --intention_size 8 \
+    --intention_size $INTENTION_SIZE \
     --task_name "$TASK_NAME" \
     --model_name "$MODEL_NAME" \
     --gpu_id $GPU_ID
