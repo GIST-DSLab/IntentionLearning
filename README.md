@@ -31,7 +31,7 @@ We suggest intention as the **ideal edge** of the state space graph among **popu
 #### Popular States for the Diagonal Flip Task
 
 <p align="center">
-    <img src="figure/popular_states_dflip.svg" width="500">
+    <img src="figure/popular_states_dflip.svg" width="800">
 </p>
 
 Although the dataset in this repository already contains **annotated intention information**, you can preprocess the data manually.
