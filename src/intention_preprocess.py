@@ -16,12 +16,13 @@ def extract_tools_from_json(json_file_path):
     
     return tools_sequence
 
+
 def process_directory(base_dir):
     unique_trajectories = {}
     results = []
 
     subdirs = [d for d in glob.glob(os.path.join(base_dir, "trace_*")) if os.path.isdir(d)]
-    
+
     if subdirs:
         for trace_dir in sorted(subdirs):
             json_files = sorted(glob.glob(os.path.join(trace_dir, "*.json")))
@@ -68,8 +69,11 @@ def process_directory(base_dir):
 
     return results, unique_trajectories
 
-def map_to_intention_trajectory(unique_trajectories):
-    trajectory_to_intention = {
+
+def map_to_intention_trajectory(task_name, unique_trajectories):
+    trajectory_to_intention = dict()
+
+    trajectory_to_intention['dflip'] = {
         ('start', 'rotate', 'rotate', 'reflectx', 'rotate', 'rotate', 'rotate', 'end'): 
             [(0, 1), (1, 2), (2, 5), (2, 5), (5, 3), (5, 3), (3, 6), (6, 7)],
 
@@ -102,10 +106,42 @@ def map_to_intention_trajectory(unique_trajectories):
 
         ('start', 'end'): 
             [(0, 1), (6, 7)],
-
     }
 
-    return {tuple(traj): trajectory_to_intention.get(tuple(traj), None) for traj in unique_trajectories}
+    trajectory_to_intention['stretch'] = {
+        ('start', 'translate', 'translate', 'translate', 'select_fill', 'select_fill', 'select_fill', 'end'): 
+            [(0, 4), (4, 6), (6, 8), (8, 10), (10, 12), (12, 14), (14, 15), (15, 16)],
+
+        ('start', 'translate', 'translate', 'select_fill', 'select_fill', 'end'):
+            [(0, 9), (9, 11), (11, 12), (12, 14), (14, 15), (15, 16)],
+
+        ('start', 'translate', 'select_fill', 'translate', 'select_fill', 'end'): 
+            [(0, 9), (9, 11), (11, 13), (13, 14), (14, 15), (15, 16)],
+
+        ('start', 'translate', 'select_fill', 'translate', 'select_fill', 'translate', 'select_fill', 'end'): 
+            [(0, 4), (4, 6), (6, 9), (9, 11), (11, 13), (13, 14), (14, 15), (15, 16)],
+
+        ('start', 'translate', 'select_fill', 'translate', 'select_fill', 'translate', 'select_fill', 'translate', 'select_fill', 'end'): 
+            [(0, 1), (1, 2), (2, 4), (4, 6), (6, 9), (9, 11), (11, 13), (13, 14), (14, 15), (15, 16)],
+
+        ('start', 'translate', 'translate', 'select_fill', 'select_fill', 'translate', 'select_fill', 'end'): 
+            [(0, 4), (4, 6), (6, 8), (8, 11), (11, 13), (13, 14), (14, 15), (15, 16)],
+
+        ('start', 'translate', 'translate', 'select_fill', 'select_fill', 'translate', 'translate', 'select_fill', 'select_fill', 'end'): 
+            [(0, 1), (1, 2), (2, 3), (3, 6), (6, 9), (9, 11), (11, 12), (12, 14), (14, 15), (15, 16)],
+
+        ('start', 'translate', 'translate', 'translate', 'select_fill', 'select_fill', 'select_fill', 'translate', 'select_fill', 'end'): 
+            [(0, 1), (1, 2), (2, 3), (3, 5), (5, 8), (8, 11), (11, 13), (13, 14), (14, 15), (15, 16)],
+
+        ('start', 'translate', 'translate', 'translate', 'translate', 'select_fill', 'select_fill', 'select_fill', 'select_fill', 'end'): 
+            [(0, 1), (1, 2), (2, 3), (3, 5), (5, 7), (7, 10), (10, 12), (12, 14), (14, 15), (15, 16)],
+
+        ('start', 'end'):  # for test dataset (only start and end action pair is provided)
+            [(0, 1), (15, 16)],
+    }
+
+    return {tuple(traj): trajectory_to_intention[task_name].get(tuple(traj), None) for traj in unique_trajectories}
+
 
 def modify_json_with_intentions(base_dir, trajectory_mapping, intention_mapping):
     json_files = []
@@ -121,6 +157,9 @@ def modify_json_with_intentions(base_dir, trajectory_mapping, intention_mapping)
         file_name = os.path.basename(json_file)
 
         trajectory = next((t for t, files in trajectory_mapping.items() if file_name in files), None)
+        if trajectory is None:
+            file_name = '_'.join(file_name.split('_')[:2])
+            trajectory = next((t for t, files in trajectory_mapping.items() if file_name in files), None)
         if trajectory is None:
             print(f"Warning: No trajectory found for {file_name}")
             continue
@@ -150,15 +189,32 @@ def modify_json_with_intentions(base_dir, trajectory_mapping, intention_mapping)
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Extract unique tool sequences from JSON files and add intention values.")
-    parser.add_argument("base_dir", type=str, help="Base directory containing JSON files or trace_xxxx subdirectories.")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("base_dir", type=str, default="./dataset/")
+    parser.add_argument("task_name", type=str, default="dflip")
+    parser.add_argument("train_or_test", type=str, default="train")
 
     args = parser.parse_args()
-    reconstructed_trajectories, trajectory_mapping = process_directory(args.base_dir)
-    intention_mapping = map_to_intention_trajectory(reconstructed_trajectories)
 
+    dataset_dir = args.base_dir + "/" + args.task_name + "/" + args.train_or_test + "/"
+
+    reconstructed_trajectories, trajectory_mapping = process_directory(dataset_dir)
+    intention_mapping = map_to_intention_trajectory(args.task_name, reconstructed_trajectories)
+
+    # Checking Unique Trajectories
+    '''
     print(f"{len(reconstructed_trajectories)} Unique Trajectories Exist\n")
+    for traj in reconstructed_trajectories:
+        print("(%d)" % len(trajectory_mapping[tuple(traj)]), end=': (')
+        for act in traj:
+            print("'%s'" % act, end=', ')
+        print('):')
 
-    modify_json_with_intentions(args.base_dir, trajectory_mapping, intention_mapping)
+        for i in range(min(3, len(trajectory_mapping[tuple(traj)]))):
+            print("\t", trajectory_mapping[tuple(traj)][i], end="")
+        print()
+    '''
+
+    modify_json_with_intentions(dataset_dir, trajectory_mapping, intention_mapping)
 
     print("All JSON files updated with intention values.")
