@@ -110,34 +110,34 @@ def map_to_intention_trajectory(task_name, unique_trajectories):
 
     trajectory_to_intention['stretch'] = {
         ('start', 'translate', 'translate', 'translate', 'select_fill', 'select_fill', 'select_fill', 'end'): 
-            [(0, 4), (4, 6), (6, 8), (8, 10), (10, 12), (12, 14), (14, 15), (15, 16)],
+            [(0, 3), (3, 4), (3, 4), (4, 6), (4, 6), (6, 8), (6, 8), (8, 9)],
 
         ('start', 'translate', 'translate', 'select_fill', 'select_fill', 'end'):
-            [(0, 9), (9, 11), (11, 12), (12, 14), (14, 15), (15, 16)],
+            [(0, 5), (5, 6), (5, 6), (6, 8), (6, 8), (8, 9)],
 
         ('start', 'translate', 'select_fill', 'translate', 'select_fill', 'end'): 
-            [(0, 9), (9, 11), (11, 13), (13, 14), (14, 15), (15, 16)],
+            [(0, 5), (5, 7), (5, 7), (7, 8), (7, 8), (8, 9)],
 
         ('start', 'translate', 'select_fill', 'translate', 'select_fill', 'translate', 'select_fill', 'end'): 
-            [(0, 4), (4, 6), (6, 9), (9, 11), (11, 13), (13, 14), (14, 15), (15, 16)],
+            [(0, 3), (3, 5), (3, 5), (5, 7), (5, 7), (7, 8), (7, 8), (8, 9)],
 
         ('start', 'translate', 'select_fill', 'translate', 'select_fill', 'translate', 'select_fill', 'translate', 'select_fill', 'end'): 
-            [(0, 1), (1, 2), (2, 4), (4, 6), (6, 9), (9, 11), (11, 13), (13, 14), (14, 15), (15, 16)],
+            [(0, 1), (1, 3), (1, 3), (3, 5), (3, 5), (5, 7), (5, 7), (7, 8), (7, 8), (8, 9)],
 
         ('start', 'translate', 'translate', 'select_fill', 'select_fill', 'translate', 'select_fill', 'end'): 
-            [(0, 4), (4, 6), (6, 8), (8, 11), (11, 13), (13, 14), (14, 15), (15, 16)],
+            [(0, 3), (3, 4), (3, 4), (4, 7), (4, 7), (7, 8), (7, 8), (8, 9)],
 
         ('start', 'translate', 'translate', 'select_fill', 'select_fill', 'translate', 'translate', 'select_fill', 'select_fill', 'end'): 
-            [(0, 1), (1, 2), (2, 3), (3, 6), (6, 9), (9, 11), (11, 12), (12, 14), (14, 15), (15, 16)],
+            [(0, 1), (1, 2), (1, 2), (2, 5), (2, 5), (5, 6), (5, 6), (6, 8), (6, 8), (8, 9)],
 
         ('start', 'translate', 'translate', 'translate', 'select_fill', 'select_fill', 'select_fill', 'translate', 'select_fill', 'end'): 
-            [(0, 1), (1, 2), (2, 3), (3, 5), (5, 8), (8, 11), (11, 13), (13, 14), (14, 15), (15, 16)],
+            [(0, 1), (1, 2), (1, 2), (2, 4), (2, 4), (4, 7), (4, 7), (7, 8), (7, 8), (8, 9)],
 
         ('start', 'translate', 'translate', 'translate', 'translate', 'select_fill', 'select_fill', 'select_fill', 'select_fill', 'end'): 
-            [(0, 1), (1, 2), (2, 3), (3, 5), (5, 7), (7, 10), (10, 12), (12, 14), (14, 15), (15, 16)],
+            [(0, 1), (1, 2), (1, 2), (2, 6), (2, 6), (2, 6), (2, 6), (6, 8), (6, 8), (8, 9)],
 
         ('start', 'end'):  # for test dataset (only start and end action pair is provided)
-            [(0, 1), (15, 16)],
+            [(0, 1), (8, 9)],
     }
 
     return {tuple(traj): trajectory_to_intention[task_name].get(tuple(traj), None) for traj in unique_trajectories}

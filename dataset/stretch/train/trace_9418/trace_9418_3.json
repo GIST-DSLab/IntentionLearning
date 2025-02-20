@@ -174,7 +174,7 @@
                 "submit": 0,
                 "intention": [
                     0,
-                    9
+                    5
                 ]
             },
             {
@@ -259,8 +259,8 @@
                 "reward": 0.2,
                 "submit": 0,
                 "intention": [
-                    9,
-                    11
+                    5,
+                    6
                 ]
             },
             {
@@ -345,8 +345,8 @@
                 "reward": 0.4,
                 "submit": 0,
                 "intention": [
-                    11,
-                    12
+                    5,
+                    6
                 ]
             },
             {
@@ -431,8 +431,8 @@
                 "reward": 0.6,
                 "submit": 0,
                 "intention": [
-                    12,
-                    14
+                    6,
+                    8
                 ]
             },
             {
@@ -517,8 +517,8 @@
                 "reward": 0.8,
                 "submit": 0,
                 "intention": [
-                    14,
-                    15
+                    6,
+                    8
                 ]
             }
         ]

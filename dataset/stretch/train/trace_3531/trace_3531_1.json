@@ -346,7 +346,7 @@
                 "submit": 0,
                 "intention": [
                     0,
-                    9
+                    5
                 ]
             },
             {
@@ -431,8 +431,8 @@
                 "reward": 0.2,
                 "submit": 0,
                 "intention": [
-                    9,
-                    11
+                    5,
+                    7
                 ]
             },
             {
@@ -517,8 +517,8 @@
                 "reward": 0.4,
                 "submit": 0,
                 "intention": [
-                    11,
-                    13
+                    5,
+                    7
                 ]
             }
         ]
