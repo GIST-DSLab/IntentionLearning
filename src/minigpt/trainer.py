@@ -212,7 +212,7 @@ class Trainer:
 
                 process = subprocess.run(test_script, shell=True, capture_output=True, text=True)
                 #print(process.stdout)
-                print(process.stderr)
+                #print(process.stderr)
 
                 val_acc = float(process.stderr.strip().split()[-1]) if process.stderr.strip() else 0.0
             wandb.log({
